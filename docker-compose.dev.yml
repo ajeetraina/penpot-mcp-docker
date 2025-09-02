@@ -1,0 +1,92 @@
+version: '3.8'
+
+# Development override for docker-compose.yml
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  penpot-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev  # If we had a multi-stage build
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./penpot_mcp:/app/penpot_mcp
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./uv.lock:/app/uv.lock
+      # Mount cache volume for faster rebuilds
+      - dev_cache:/app/.cache
+    ports:
+      - "5000:5000"
+      - "5001:5001"  # Additional port for debugging
+    command: ["uv", "run", "--dev", "penpot-mcp"]
+    restart: "no"  # Don't auto-restart in dev mode
+    stdin_open: true
+    tty: true
+    healthcheck:
+      # More frequent health checks in dev
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Development tools and utilities
+  redis:
+    ports:
+      - "6379:6379"  # Expose Redis port for development
+    command: redis-server --appendonly yes --loglevel debug
+
+  # Optional: Add a development database if needed
+  postgres:
+    image: postgres:15-alpine
+    container_name: penpot-mcp-postgres-dev
+    environment:
+      - POSTGRES_DB=penpot_mcp_dev
+      - POSTGRES_USER=penpot_dev
+      - POSTGRES_PASSWORD=dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - penpot-network
+
+  # Optional: Add Adminer for database management
+  adminer:
+    image: adminer:latest
+    container_name: penpot-mcp-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - penpot-network
+    depends_on:
+      - postgres
+
+  # Optional: Add Prometheus for metrics (development)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: penpot-mcp-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - penpot-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+volumes:
+  dev_cache:
+    driver: local
+  postgres_dev_data:
+    driver: local
+
+networks:
+  penpot-network:
+    driver: bridge
