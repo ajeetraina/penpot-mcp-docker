@@ -1,0 +1,102 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+*.cover
+.hypothesis/
+
+# Virtual environments
+.venv/
+venv/
+.env
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Documentation and examples
+README.md
+*.md
+docs/
+examples/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Local development files
+.local/
+*.log
+logs/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test files and coverage
+tests/
+test_*
+*_test.py
+coverage.xml
+*.coverage
+htmlcov/
+
+# Linting and formatting
+.flake8
+.pre-commit-config.yaml
+lint.py
+fix-lint-deps.sh
+
+# Development dependencies
+requirements-dev.txt
+dev-requirements.txt
