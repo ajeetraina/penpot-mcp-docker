@@ -296,12 +296,4 @@ Available MCP tools:
 - `get_object_tree` - Get object tree structure
 - `search_object` - Search for objects within a file
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test with Docker
-5. Submit a pull request
-
-](https://github.com/ajeetraina) | Docker Captain & ARM Innovator
+om/ajeetraina) | Docker Captain & ARM Innovator
