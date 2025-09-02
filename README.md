@@ -304,23 +304,4 @@ Available MCP tools:
 4. Test with Docker
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [PenPot MCP Server](https://github.com/montevive/penpot-mcp) - Original project
-- [Penpot](https://penpot.app/) - The open-source design platform
-- [Model Context Protocol](https://modelcontextprotocol.io) - The MCP standard
-
-## 📞 Support
-
-For issues related to:
-- **Docker setup**: Open an issue in this repository
-- **Original MCP server**: Visit the [original project](https://github.com/montevive/penpot-mcp)
-- **Penpot platform**: Check [Penpot documentation](https://help.penpot.app/)
-
----
-
-Made with ❤️ by [Ajeet Singh Raina](https://github.com/ajeetraina) | Docker Captain & ARM Innovator
+](https://github.com/ajeetraina) | Docker Captain & ARM Innovator
