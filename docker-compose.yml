@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  penpot-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: penpot-mcp:latest
+    container_name: penpot-mcp-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PENPOT_API_URL=${PENPOT_API_URL:-https://design.penpot.app/api}
+      - PENPOT_USERNAME=${PENPOT_USERNAME}
+      - PENPOT_PASSWORD=${PENPOT_PASSWORD}
+      - PORT=${PORT:-5000}
+      - DEBUG=${DEBUG:-false}
+    env_file:
+      - .env
+    volumes:
+      # Optional: Mount a volume for persistent cache/data
+      - penpot_cache:/app/.cache
+    networks:
+      - penpot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a Redis service for caching
+  redis:
+    image: redis:7-alpine
+    container_name: penpot-mcp-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - penpot-network
+    command: redis-server --appendonly yes
+
+volumes:
+  penpot_cache:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  penpot-network:
+    driver: bridge
